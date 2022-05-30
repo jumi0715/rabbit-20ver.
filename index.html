@@ -1,26 +1,27 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>RSVP Dual Task Demo</title>
-    <script src="https://unpkg.com/jspsych@7.0.0"></script>
-    <script src="https://unpkg.com/@jspsych/plugin-preload@1.0.0"></script>
-    <script src="https://unpkg.com/@jspsych/plugin-instructions@1.0.0"></script>
-    <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@1.0.0"></script>
-    <script src="https://unpkg.com/@jspsych/plugin-image-keyboard-response@1.0.0"></script>
-    <script src="https://unpkg.com/@jspsych/plugin-fullscreen@1.0.0"></script>
-    <script src="https://unpkg.com/@jspsych/plugin-animation@1.0.0"></script>
-    <link href="https://unpkg.com/jspsych@7.1.2/css/jspsych.css" rel="stylesheet" type="text/css" />
+    <title>Multitasking Test</title>
+    <script src="https://unpkg.com/jspsych@7.2.1"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-preload@1.1.0"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-instructions@1.1.0"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@1.1.0"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-image-keyboard-response@1.1.0"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-fullscreen@1.1.0"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-animation@1.1.0"></script>
+    <link href="https://unpkg.com/jspsych@7.2.1/css/jspsych.css" rel="stylesheet" type="text/css" />
   </head>
   <body></body>
   <script>
     //const base_url = '';
-    const base_url = 'https://jumi0715.github.io/rabbit-20ver./';
+    const base_url = 'https://jumi0715.github.io/rabbit/';
     const p_num_frames = [6, 10, 9];
     const p_corr_ans = [1, 2, 1];
     const q_num_frames = [14, 12, 11];
     const q_corr_ans = [3, 3, 2];
     const m_num_frames = [18, 19, 9, 15, 24, 18, 23, 6, 11, 11, 13, 21, 24, 16, 16, 13, 10, 17, 25, 16];
     const m_corr_ans = [3, 1, 1, 2, 3, 3, 3, 2, 1, 1, 1, 3, 1, 2, 3, 2, 1, 3, 3, 2];
+    const wm_corr_ans = [2, 3, 2, 2, 1, 3, 2, 2, 2, 1, 1, 3, 1, 2, 1, 2, 3, 3, 3, 3];
 
     
     var all_imgs = [];
@@ -29,6 +30,7 @@
     all_imgs.push(base_url + 'img/q_ins1.png');
     all_imgs.push(base_url + 'img/q_ins2.png');
     all_imgs.push(base_url + 'img/t_ins.png');
+    all_imgs.push(base_url + 'img/wm_ins.png');
 
     var p_rsvp_imgs = [];
     for (let t = 1; t <= p_num_frames.length; t++) {
@@ -40,6 +42,7 @@
         rsvp_imgs.push(base_url + 'img/p' + t + 's' + s + 'a.png');
         rsvp_imgs.push(base_url + 'img/p' + t + 's' + s + 'b.png');
       }
+
       all_imgs = all_imgs.concat(rsvp_imgs);
       all_imgs.push(base_url + 'img/p' + t + 'r.png');
       p_rsvp_imgs.push({
@@ -87,6 +90,17 @@
       });
     }
 
+    var wm_rsvp_imgs = [];
+    for (let t = 1; t <= 20; t++) {
+      let wm_img = [];
+      wm_img.push(base_url + 'img/wm' + t + '.png');
+      all_imgs = all_imgs.concat(wm_img);
+      wm_rsvp_imgs.push({
+        stimuli: wm_img,
+        corr_ans: wm_corr_ans[t-1]
+      });
+    }
+
 
 
     var jsPsych = initJsPsych({
@@ -111,13 +125,14 @@
 
     var p_ins1 = {
       type: jsPsychImageKeyboardResponse,
-      stimulus: base_url + 'img/p_ins1.png',
+      stimulus: 'img/p_ins1.png',
       choices: [' ']
     };
     timeline.push(p_ins1);
+
     var p_ins2 = {
       type: jsPsychImageKeyboardResponse,
-      stimulus: base_url + 'img/p_ins2.png',
+      stimulus: 'img/p_ins2.png',
       choices: [' ']
     };
     timeline.push(p_ins2);
@@ -164,7 +179,7 @@
       stimulus: jsPsych.timelineVariable('resp_img'),
       prompt: '<p>Which is the second to the last image?</p>',
       choices: ['1', '2', '3'],
-      data: { trial_type: '3afc' },
+      data: { trial_type: '2back' },
       on_finish: function(data) {
         var corr_ans = jsPsych.timelineVariable('corr_ans');
         if (Number(data.response) == corr_ans) {
@@ -195,13 +210,14 @@
 
     var q_ins1 = {
       type: jsPsychImageKeyboardResponse,
-      stimulus: base_url + 'img/q_ins1.png',
+      stimulus: 'img/q_ins1.png',
       choices: [' ']
     };
     timeline.push(q_ins1);
+
     var q_ins2 = {
       type: jsPsychImageKeyboardResponse,
-      stimulus: base_url + 'img/q_ins2.png',
+      stimulus: 'img/q_ins2.png',
       choices: [' ']
     };
     timeline.push(q_ins2);
@@ -214,7 +230,7 @@
 
     var t_ins = {
       type: jsPsychImageKeyboardResponse,
-      stimulus: base_url + 'img/t_ins.png',
+      stimulus: 'img/t_ins.png',
       choices: [' ']
     };
     timeline.push(t_ins);
@@ -224,6 +240,38 @@
       timeline_variables: m_rsvp_imgs
     }
     timeline.push(m_trials);
+
+//wm
+
+    var wm_ins = {
+      type: jsPsychImageKeyboardResponse,
+      stimulus: 'img/wm_ins.png',
+      choices: [' ']
+    };
+    timeline.push(wm_ins);
+
+    var wm_resp = {
+      type: jsPsychImageKeyboardResponse,
+      stimulus: jsPsych.timelineVariable('stimuli'),
+      prompt: '<p>Which image did you see?</p>',
+      choices: ['1', '2', '3'],
+      post_trial_gap: 400,
+      data: { trial_type: 'memory' },
+      on_finish: function(data) {
+        var corr_ans = jsPsych.timelineVariable('corr_ans');
+        if (Number(data.response) == corr_ans) {
+          data.correct = true;
+        } else {
+          data.correct = false;
+        }
+      }
+    };
+    var wm_trials = {
+      timeline: [wm_resp],
+      timeline_variables: wm_rsvp_imgs 
+    }
+    timeline.push(wm_trials);
+
 
     var end_FS = {
       type: jsPsychFullscreen,
