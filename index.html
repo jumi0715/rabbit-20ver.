@@ -171,14 +171,14 @@
       choices: ['a', 'l'],
       prompt: '<p>[A] for male, [L] for female</p>',
       post_trial_gap: 500,
-      data: { trial_type: 'rsvp' }
+      data: { task_type: 'rsvp' }
     };
     var main_resp = {
       type: jsPsychImageKeyboardResponse,
       stimulus: jsPsych.timelineVariable('resp_img'),
       prompt: '<p>Which is the second to the last image?</p>',
       choices: ['1', '2', '3'],
-      data: { trial_type: '2back' },
+      data: { task_type: '2back' },
       on_finish: function(data) {
         var corr_ans = jsPsych.timelineVariable('corr_ans');
         if (Number(data.response) == corr_ans) {
@@ -255,7 +255,7 @@
       prompt: '<p>Which image did you see?</p>',
       choices: ['1', '2', '3'],
       post_trial_gap: 400,
-      data: { trial_type: 'memory' },
+      data: { task_type: 'memory' },
       on_finish: function(data) {
         var corr_ans = jsPsych.timelineVariable('corr_ans');
         if (Number(data.response) == corr_ans) {
